@@ -1,3 +1,5 @@
 *.vs*
 *.sdf
 *.ipch
+*.opendb
+*debug*
