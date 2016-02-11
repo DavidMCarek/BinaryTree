@@ -5,11 +5,12 @@
 #include <iostream>
 #include <string>
 #include "CommandValidator.h"
+#include "BinaryTree.h"
 
 using namespace std;
 
 void Help();
-bool ExecuteCommand(CommandValidator::Command command);
+bool ExecuteCommand(CommandValidator::Command command, BinaryTree binaryTree);
 
 int main()
 {
@@ -19,6 +20,7 @@ int main()
 	string userInput;
 	bool exitProgram = false;
 	CommandValidator commandValidator;
+	BinaryTree binaryTree;
 
 	// while the user still wants to run the the program keep asking for input
 	do
@@ -40,7 +42,7 @@ int main()
 		{
 			// execute command will also set the exit program variable by returning true 
 			// if the command is exit
-			exitProgram = ExecuteCommand(commandValidator.GetCurrentCommand());
+			exitProgram = ExecuteCommand(commandValidator.GetCurrentCommand(), binaryTree);
 		}
 		else
 		{
@@ -57,7 +59,7 @@ int main()
     return 0;
 }
 
-bool ExecuteCommand(CommandValidator::Command command)
+bool ExecuteCommand(CommandValidator::Command command, BinaryTree binaryTree)
 {
 	
 
@@ -76,10 +78,11 @@ bool ExecuteCommand(CommandValidator::Command command)
 		
 		case CommandValidator::Command::Insert:
 		{
-			// get the string the user wants to input
+			// get the string the user wants to input then add it to the tree
 			string userInput;
 			cin >> userInput;
 			cout << endl;
+			binaryTree.Insert(userInput);
 		} break;
 		
 	}

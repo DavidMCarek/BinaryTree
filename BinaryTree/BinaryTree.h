@@ -9,12 +9,13 @@ public:
 	void Insert(std::string input);
 private:
 	struct Node {
-		Node* parent;
-		Node* leftChild;
-		Node* rightChild;
+		Node* parent = nullptr;
+		Node* leftChild = nullptr;
+		Node* rightChild = nullptr;
 		std::string value;
-		int count;
+		int count = 1;
 	};
+	void PrintNodeInfo(Node* node);
 	Node* Root;
 
 };
