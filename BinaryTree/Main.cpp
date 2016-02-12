@@ -84,6 +84,12 @@ bool ExecuteCommand(CommandValidator::Command command, BinaryTree binaryTree)
 			cout << endl;
 			binaryTree.Insert(userInput);
 		} break;
+
+		case CommandValidator::Command::List:
+		{
+			cout << endl;
+			binaryTree.List();
+		} break;
 		
 	}
 	

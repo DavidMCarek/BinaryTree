@@ -7,6 +7,7 @@ public:
 	BinaryTree();
 	~BinaryTree();
 	void Insert(std::string input);
+	void List();
 private:
 	struct Node {
 		Node* parent = nullptr;
@@ -17,6 +18,8 @@ private:
 	};
 	void PrintNodeInfo(Node* node);
 	Node* Root;
+	enum ChildDirection {Left, Right, Unknown};
+	void Traverse(Node* node);
 
 };
 
