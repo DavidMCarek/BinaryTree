@@ -12,8 +12,11 @@ CommandValidator::~CommandValidator()
 {
 }
 
+// sets the command enum based on the input command 
 void CommandValidator::SetCommand(std::string command)
 {
+	//command = ToLower(command);
+
 	currentCommand = Invalid;
 	if (command == "exit")
 		currentCommand = Exit;
@@ -47,3 +50,19 @@ bool CommandValidator::IsValidCommand()
 {
 	return currentCommand != Invalid;
 }
+
+//std::string ToLower(std::string input)
+//{
+//	return input;
+//	std::string lowerInput = "";
+//	for (int i = 0; i < input.length; i++)
+//	{
+//		std::string lowerChar;
+//		if (input[i] <= 'Z' && input[i] >= 'A')
+//		{
+//
+//		}
+//
+//		//lowerInput.append();
+//	}
+//}

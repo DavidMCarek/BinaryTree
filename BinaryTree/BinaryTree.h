@@ -8,6 +8,8 @@ public:
 	~BinaryTree();
 	void Insert(std::string input);
 	void List();
+	void Min();
+	void Max();
 private:
 	struct Node {
 		Node* parent = nullptr;

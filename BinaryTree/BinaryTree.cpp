@@ -12,6 +12,7 @@ BinaryTree::BinaryTree()
 
 BinaryTree::~BinaryTree()
 {
+	delete Root;
 }
 
 void BinaryTree::Insert(std::string input)
@@ -90,4 +91,48 @@ void BinaryTree::Traverse(Node* node)
 
 	if (node->rightChild != nullptr)
 		Traverse(node->rightChild);
+}
+
+void BinaryTree::Min()
+{
+	// start at the root and go left until the left pointer is null
+	if (Root == nullptr)
+		std::cout << std::endl;
+	else
+	{
+		Node* currentNode = Root;
+		bool minPrinted = false;
+		while (!minPrinted)
+		{
+			if (currentNode->leftChild == nullptr)
+			{
+				std::cout << currentNode->value;
+				minPrinted = true;
+			}
+			else
+				currentNode = currentNode->leftChild;
+		}
+	}
+}
+
+void BinaryTree::Max()
+{
+	// start at the root and go right until the right pointer is null
+	if (Root == nullptr)
+		std::cout << std::endl;
+	else
+	{
+		Node* currentNode = Root;
+		bool maxPrinted = false;
+		while (!maxPrinted)
+		{
+			if (currentNode->rightChild == nullptr)
+			{
+				std::cout << currentNode->value;
+				maxPrinted = true;
+			}
+			else
+				currentNode = currentNode->rightChild;
+		}
+	}
 }

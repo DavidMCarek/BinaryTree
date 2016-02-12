@@ -10,7 +10,7 @@
 using namespace std;
 
 void Help();
-bool ExecuteCommand(CommandValidator::Command command, BinaryTree binaryTree);
+bool ExecuteCommand(CommandValidator::Command command, BinaryTree& binaryTree);
 
 int main()
 {
@@ -59,10 +59,9 @@ int main()
     return 0;
 }
 
-bool ExecuteCommand(CommandValidator::Command command, BinaryTree binaryTree)
+bool ExecuteCommand(CommandValidator::Command command, BinaryTree& binaryTree)
 {
 	
-
 	// now we need to execute the correct piece of code for the command entered
 	switch (command)
 	{
@@ -89,6 +88,18 @@ bool ExecuteCommand(CommandValidator::Command command, BinaryTree binaryTree)
 		{
 			cout << endl;
 			binaryTree.List();
+		} break;
+
+		case CommandValidator::Command::Min:
+		{
+			cout << endl;
+			binaryTree.Min();
+		} break;
+
+		case CommandValidator::Command::Max:
+		{
+			cout << endl;
+			binaryTree.Max();
 		} break;
 		
 	}

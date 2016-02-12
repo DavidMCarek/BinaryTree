@@ -12,5 +12,6 @@ public:
 	Command GetCurrentCommand();
 private:
 	Command currentCommand;
+	std::string ToLower(std::string input);
 };
 
