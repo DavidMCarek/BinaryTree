@@ -6,12 +6,12 @@ class CommandValidator
 public:
 	CommandValidator();
 	~CommandValidator();
-	void SetCommand(std::string command);
-	bool IsValidCommand();
+	void setCommand(std::string command);
+	bool isValidCommand();
 	enum Command { Insert, Delete, Search, Min, Max, Next, Previous, List, Help, Exit, Invalid };
-	Command GetCurrentCommand();
+	Command getCurrentCommand();
 private:
 	Command currentCommand;
-	std::string ToLower(std::string input);
+	std::string toLower(std::string input);
 };
 

@@ -9,12 +9,12 @@
 
 using namespace std;
 
-void Help();
-bool ExecuteCommand(CommandValidator::Command command, BinaryTree& binaryTree);
+void help();
+bool executeCommand(CommandValidator::Command command, BinaryTree& binaryTree);
 
 int main()
 {
-	Help();
+	help();
 
 	string command;
 	string userInput;
@@ -34,22 +34,21 @@ int main()
 		cin >> command;
 
 		// we need to set the command that will be validated
-		commandValidator.SetCommand(command);
+		commandValidator.setCommand(command);
 
 		// if the command is valid execute it else let user know input is invalid 
 		// and continue through the loop
-		if (commandValidator.IsValidCommand())
+		if (commandValidator.isValidCommand())
 		{
 			// execute command will also set the exit program variable by returning true 
 			// if the command is exit
-			exitProgram = ExecuteCommand(commandValidator.GetCurrentCommand(), binaryTree);
+			exitProgram = executeCommand(commandValidator.getCurrentCommand(), binaryTree);
 		}
 		else
 		{
 			cout << endl
 				<< "The command entered is invalid."
 				<< endl;
-			continue;
 		}
 		
 		cout << endl;
@@ -59,7 +58,7 @@ int main()
     return 0;
 }
 
-bool ExecuteCommand(CommandValidator::Command command, BinaryTree& binaryTree)
+bool executeCommand(CommandValidator::Command command, BinaryTree& binaryTree)
 {
 	
 	// now we need to execute the correct piece of code for the command entered
@@ -72,7 +71,7 @@ bool ExecuteCommand(CommandValidator::Command command, BinaryTree& binaryTree)
 		
 		case CommandValidator::Command::Help:
 		{
-			Help();
+			help();
 		} break;
 		
 		case CommandValidator::Command::Insert:
@@ -81,25 +80,49 @@ bool ExecuteCommand(CommandValidator::Command command, BinaryTree& binaryTree)
 			string userInput;
 			cin >> userInput;
 			cout << endl;
-			binaryTree.Insert(userInput);
+			binaryTree.insert(userInput);
 		} break;
 
 		case CommandValidator::Command::List:
 		{
 			cout << endl;
-			binaryTree.List();
+			binaryTree.list();
 		} break;
 
 		case CommandValidator::Command::Min:
 		{
 			cout << endl;
-			binaryTree.Min();
+			binaryTree.min();
 		} break;
 
 		case CommandValidator::Command::Max:
 		{
 			cout << endl;
-			binaryTree.Max();
+			binaryTree.max();
+		} break;
+
+		case CommandValidator::Command::Search:
+		{
+			string userInput;
+			cin >> userInput;
+			cout << endl;
+			binaryTree.search(userInput);
+		} break;
+
+		case CommandValidator::Command::Next:
+		{
+			string userInput;
+			cin >> userInput;
+			cout << endl;
+			binaryTree.next(userInput);
+		} break;
+
+		case CommandValidator::Command::Previous:
+		{
+			string userInput;
+			cin >> userInput;
+			cout << endl;
+			binaryTree.previous(userInput);
 		} break;
 		
 	}
@@ -107,7 +130,7 @@ bool ExecuteCommand(CommandValidator::Command command, BinaryTree& binaryTree)
 	return false;
 }
 
-void Help() 
+void help() 
 {
 	// output the help menu
 	cout << "This program creates a binary search tree where the user can perform several operations." << endl
@@ -141,6 +164,6 @@ void Help()
 		<< "outputs the help screen" << endl << endl
 
 		<< "exit" << endl
-		<< "quits the program" << endl;
+		<< "quits the program" << endl << endl;
 		
 }

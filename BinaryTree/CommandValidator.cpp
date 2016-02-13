@@ -3,19 +3,14 @@
 #include "CommandValidator.h"
 #include <string>
 
-CommandValidator::CommandValidator()
-{
-}
+CommandValidator::CommandValidator(){}
 
-
-CommandValidator::~CommandValidator()
-{
-}
+CommandValidator::~CommandValidator(){}
 
 // sets the command enum based on the input command 
-void CommandValidator::SetCommand(std::string command)
+void CommandValidator::setCommand(std::string command)
 {
-	command = ToLower(command);
+	command = toLower(command);
 
 	currentCommand = Invalid;
 	if (command == "exit")
@@ -41,18 +36,18 @@ void CommandValidator::SetCommand(std::string command)
 
 }
 
-CommandValidator::Command CommandValidator::GetCurrentCommand() 
+CommandValidator::Command CommandValidator::getCurrentCommand() 
 {
 	return currentCommand;
 }
 
-bool CommandValidator::IsValidCommand()
+bool CommandValidator::isValidCommand()
 {
 	return currentCommand != Invalid;
 }
 
 // takes in a string and makes all letters lowercase
-std::string CommandValidator::ToLower(std::string input)
+std::string CommandValidator::toLower(std::string input)
 {
 	std::string lowerInput = "";
 

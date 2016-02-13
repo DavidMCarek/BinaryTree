@@ -15,16 +15,14 @@ BinaryTree::~BinaryTree()
 	delete Root;
 }
 
-void BinaryTree::Insert(std::string input)
+void BinaryTree::insert(std::string input)
 {
 	Node* currentNode = Root;
 	Node* previousNode = nullptr;
 	ChildDirection previousDirection = Unknown;
-	bool nodeCreated = false;
-	bool nodeCountIncremented = false;
 
 	// loop will run until a node gets created or the count of a node is incremented
-	while (!nodeCreated && !nodeCountIncremented) 
+	while (true) 
 	{
 		// if the current node is null then we have traveresed to a leaf of the root is null
 		// in either case we need a new node for the tree and its value should be set to the
@@ -37,7 +35,7 @@ void BinaryTree::Insert(std::string input)
 			// the previous node should either be null if the current node is the root or 
 			// one node up in the tree which would be the parent 
 			currentNode->parent = previousNode;
-			PrintNodeInfo(currentNode);
+			printNodeInfo(currentNode);
 
 			// now we have to set the parent to point to the new node based on the direction 
 			// that was taken traveresing the tree
@@ -49,7 +47,7 @@ void BinaryTree::Insert(std::string input)
 			// if there is no root then the node created is the root
 			if (Root == nullptr)
 				Root = currentNode;
-			nodeCreated = true;
+			return;
 		}
 		else if (input.compare(currentNode->value) < 0) // input < node value | go left
 		{
@@ -66,74 +64,183 @@ void BinaryTree::Insert(std::string input)
 		else if (input.compare(currentNode->value) == 0) //input == node value | increment count
 		{
 			currentNode->count = currentNode->count++;
-			PrintNodeInfo(currentNode);
-			nodeCountIncremented = true;
+			printNodeInfo(currentNode);
+			return;
 		}
 	}	
 }
 
-void BinaryTree::PrintNodeInfo(Node* node)
+void BinaryTree::printNodeInfo(Node* node)
 {
 	std::cout << "Value: " << node->value << " Count: " << node->count << std::endl;
 }
 
-void BinaryTree::List()
-{
-	// traverse to min point, then go up one, right one, left as far  
-	Traverse(Root);
+void BinaryTree::list()
+{ 
+	traverse(Root);
 }
 
-void BinaryTree::Traverse(Node* node)
+void BinaryTree::traverse(Node* node)
 {
 	if (node->leftChild != nullptr)
-		Traverse(node->leftChild);
+		traverse(node->leftChild);
 	
-	PrintNodeInfo(node);
+	printNodeInfo(node);
 
 	if (node->rightChild != nullptr)
-		Traverse(node->rightChild);
+		traverse(node->rightChild);
 }
 
-void BinaryTree::Min()
+// takes in a node and get the leftmost node based off of that nodes children
+BinaryTree::Node* BinaryTree::getLeftmostNode(Node* node)
+{
+	while (true)
+	{
+		if (node->leftChild == nullptr)
+			return node;
+		else
+			node = node->leftChild;
+	}
+}
+
+// takes in a node and get the rightmost node based off of that nodes children
+BinaryTree::Node* BinaryTree::getRightmostNode(Node* node)
+{
+	while (true)
+	{
+		if (node->rightChild == nullptr)
+			return node;
+		else
+			node = node->rightChild;
+	}
+}
+
+void BinaryTree::min()
 {
 	// start at the root and go left until the left pointer is null
 	if (Root == nullptr)
 		std::cout << std::endl;
 	else
 	{
-		Node* currentNode = Root;
-		bool minPrinted = false;
-		while (!minPrinted)
-		{
-			if (currentNode->leftChild == nullptr)
-			{
-				std::cout << currentNode->value << std::endl;
-				minPrinted = true;
-			}
-			else
-				currentNode = currentNode->leftChild;
-		}
+		Node* node = getLeftmostNode(Root);
+		std::cout << node->value << std::endl;
 	}
 }
 
-void BinaryTree::Max()
+void BinaryTree::max()
 {
 	// start at the root and go right until the right pointer is null
 	if (Root == nullptr)
 		std::cout << std::endl;
 	else
 	{
-		Node* currentNode = Root;
-		bool maxPrinted = false;
-		while (!maxPrinted)
+		Node* node = getRightmostNode(Root);
+		std::cout << node->value << std::endl;
+	}
+}
+
+void BinaryTree::search(std::string input)
+{
+	Node* node = nodeLookup(input);
+	if (node == nullptr)
+		std::cout << input << " 0" << std::endl;
+	else
+		printNodeInfo(node);
+}
+
+BinaryTree::Node* BinaryTree::nodeLookup(std::string input)
+{
+	Node* currentNode = Root;
+
+	while (true)
+	{
+		if (input.compare(currentNode->value) < 0)
+		{
+			if (currentNode->leftChild == nullptr)
+			{
+				std::cout << std::endl;
+				return nullptr;
+			}
+			currentNode = currentNode->leftChild;
+		}
+		else if (input.compare(currentNode->value) > 0)
 		{
 			if (currentNode->rightChild == nullptr)
 			{
-				std::cout << currentNode->value << std::endl;
-				maxPrinted = true;
+				std::cout << std::endl;
+				return nullptr;
 			}
-			else
-				currentNode = currentNode->rightChild;
+			currentNode = currentNode->rightChild;
+		}
+		else
+		{
+			return currentNode;
 		}
 	}
+}
+
+void BinaryTree::next(std::string input)
+{
+	Node* node = nodeLookup(input);
+
+	if (node == nullptr)
+	{
+		std::cout << std::endl;
+		return;
+	}
+	
+	// if node has right child go as far left as possible from that child
+
+	if (node->rightChild != nullptr)
+		node = getLeftmostNode(node->rightChild);
+	else
+	{
+		std::string nodeValue = node->value;
+
+		do
+		{
+			if (node->parent != nullptr)
+				node = node->parent;
+			else
+			{
+				std::cout << std::endl;
+				return;
+			}
+		} while (nodeValue.compare(node->value) > 0);
+	}
+
+	std::cout << node->value << std::endl;
+}
+
+void BinaryTree::previous(std::string input)
+{
+	Node* node = nodeLookup(input);
+
+	if (node == nullptr)
+	{
+		std::cout << std::endl;
+		return;
+	}
+
+	// if node has left child go as far right as possible from that child
+
+	if (node->leftChild != nullptr)
+		node = getRightmostNode(node->leftChild);
+	else
+	{
+		std::string nodeValue = node->value;
+
+		do
+		{
+			if (node->parent != nullptr)
+				node = node->parent;
+			else
+			{
+				std::cout << std::endl;
+				return;
+			}
+		} while (nodeValue.compare(node->value) < 0);
+	}
+
+	std::cout << node->value << std::endl;
 }
