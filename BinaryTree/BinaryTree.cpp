@@ -66,6 +66,7 @@ void BinaryTree::Insert(std::string input)
 		else if (input.compare(currentNode->value) == 0) //input == node value | increment count
 		{
 			currentNode->count = currentNode->count++;
+			PrintNodeInfo(currentNode);
 			nodeCountIncremented = true;
 		}
 	}	
@@ -106,7 +107,7 @@ void BinaryTree::Min()
 		{
 			if (currentNode->leftChild == nullptr)
 			{
-				std::cout << currentNode->value;
+				std::cout << currentNode->value << std::endl;
 				minPrinted = true;
 			}
 			else
@@ -128,7 +129,7 @@ void BinaryTree::Max()
 		{
 			if (currentNode->rightChild == nullptr)
 			{
-				std::cout << currentNode->value;
+				std::cout << currentNode->value << std::endl;
 				maxPrinted = true;
 			}
 			else

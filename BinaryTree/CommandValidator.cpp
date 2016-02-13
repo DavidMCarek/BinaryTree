@@ -15,7 +15,7 @@ CommandValidator::~CommandValidator()
 // sets the command enum based on the input command 
 void CommandValidator::SetCommand(std::string command)
 {
-	//command = ToLower(command);
+	command = ToLower(command);
 
 	currentCommand = Invalid;
 	if (command == "exit")
@@ -51,18 +51,22 @@ bool CommandValidator::IsValidCommand()
 	return currentCommand != Invalid;
 }
 
-//std::string ToLower(std::string input)
-//{
-//	return input;
-//	std::string lowerInput = "";
-//	for (int i = 0; i < input.length; i++)
-//	{
-//		std::string lowerChar;
-//		if (input[i] <= 'Z' && input[i] >= 'A')
-//		{
-//
-//		}
-//
-//		//lowerInput.append();
-//	}
-//}
+// takes in a string and makes all letters lowercase
+std::string CommandValidator::ToLower(std::string input)
+{
+	std::string lowerInput = "";
+
+	// iterate through the characters of the input and if the character is uppercase
+	// subtract the the difference between upper and lower case letters from the letter
+	// then append the now lower letter to the new output
+	for (int i = 0; i < input.length(); i++)
+	{
+		std::string lowerChar = std::string(1, input[i]);
+		if (input[i] <= 'Z' && input[i] >= 'A')
+			lowerChar = std::string(1, input[i] - ('A' - 'a'));
+			
+		lowerInput.append(lowerChar);
+	}
+
+	return lowerInput;
+}
