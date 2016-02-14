@@ -72,11 +72,16 @@ void BinaryTree::insert(std::string input)
 
 void BinaryTree::printNodeInfo(Node* node)
 {
-	std::cout << "Value: " << node->value << " Count: " << node->count << std::endl;
+	std::cout << node->value << " " << node->count << std::endl;
 }
 
 void BinaryTree::list()
 { 
+	if (Root == nullptr)
+	{
+		std::cout << std::endl;
+		return;
+	}
 	traverse(Root);
 }
 
@@ -243,4 +248,59 @@ void BinaryTree::previous(std::string input)
 	}
 
 	std::cout << node->value << std::endl;
+}
+
+void BinaryTree::deleteInput(std::string input)
+{
+	Node* node = nodeLookup(input);
+
+	// if node not found then print out the input string and -1
+	if (node == nullptr)
+	{
+		std::cout << input << " -1" << std::endl;
+		return;
+	}
+	else
+	{
+		node->count = node->count--;
+		printNodeInfo(node);
+
+		if (node->count < 1)
+			removeNode(node);
+	}
+}
+
+void BinaryTree::removeNode(Node* node)
+{
+	if (node->leftChild == nullptr)
+		transplant(node, node->rightChild);
+	else if (node->rightChild == nullptr)
+		transplant(node, node->leftChild);
+	else
+	{
+		Node* next = getLeftmostNode(node->rightChild);
+		if (next->parent != node)
+		{
+			transplant(next, next->rightChild);
+			next->rightChild = node->rightChild;
+			next->parent = next;
+		}
+		transplant(node, next);
+		next->leftChild = node->leftChild;
+		next->leftChild->parent = next;
+	}
+
+}
+
+void BinaryTree::transplant(Node* primary, Node* secondary)
+{
+	if (primary->parent == nullptr)
+		Root = secondary;
+	else if (primary == primary->parent->leftChild)
+		primary->parent->leftChild = secondary;
+	else
+		primary->parent->rightChild = secondary;
+
+	if (secondary != nullptr)
+		secondary->parent = primary->parent;
 }

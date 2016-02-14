@@ -13,6 +13,7 @@ public:
 	void search(std::string input);
 	void next(std::string input);
 	void previous(std::string input);
+	void deleteInput(std::string input);
 private:
 	struct Node {
 		Node* parent = nullptr;
@@ -28,6 +29,8 @@ private:
 	Node* nodeLookup(std::string input);
 	Node* getLeftmostNode(Node* node);
 	Node* getRightmostNode(Node* node);
+	void removeNode(Node* node);
+	void transplant(Node* node, Node* child);
 
 };
 

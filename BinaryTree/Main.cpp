@@ -125,6 +125,13 @@ bool executeCommand(CommandValidator::Command command, BinaryTree& binaryTree)
 			binaryTree.previous(userInput);
 		} break;
 		
+		case CommandValidator::Command::Delete:
+		{
+			string userInput;
+			cin >> userInput;
+			cout << endl;
+			binaryTree.deleteInput(userInput);
+		} break;
 	}
 	
 	return false;
