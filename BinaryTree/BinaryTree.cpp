@@ -13,7 +13,7 @@ BinaryTree::BinaryTree()
 BinaryTree::~BinaryTree()
 {
 	deleteRemainingNodes(Root);
-	delete Root;
+	Root = nullptr;
 }
 
 // recurse through the tree and delete all nodes left on the tree
@@ -22,7 +22,7 @@ void BinaryTree::deleteRemainingNodes(Node* node)
 	// if the current node has any children it will go down until it hits a leaf
 	if (node->leftChild != nullptr)
 		deleteRemainingNodes(node->leftChild);
-	else if (node->rightChild != nullptr)
+	if (node->rightChild != nullptr)
 		deleteRemainingNodes(node->rightChild);
 
 	// if the leaf has no parent it is th root and can just be deleted
