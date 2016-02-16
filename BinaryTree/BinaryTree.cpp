@@ -62,6 +62,7 @@ void BinaryTree::insert(std::string input)
 		else
 		{
 			currentNode->count = currentNode->count++;
+			printNodeInfo(currentNode);
 			return;
 		}
 	}
@@ -69,6 +70,7 @@ void BinaryTree::insert(std::string input)
 	// since we are at a null leaf we need to create a new node and set its value to the input
 	currentNode = new Node();
 	currentNode->value = input;
+	printNodeInfo(currentNode);
 
 	// if the previous node is null then it must be the root so we need to set the root node
 	// to the current node
