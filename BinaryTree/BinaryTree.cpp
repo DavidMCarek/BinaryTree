@@ -12,7 +12,35 @@ BinaryTree::BinaryTree()
 
 BinaryTree::~BinaryTree()
 {
+	deleteRemainingNodes(Root);
 	delete Root;
+}
+
+// recurse through the tree and delete all nodes left on the tree
+void BinaryTree::deleteRemainingNodes(Node* node)
+{
+	// if the current node has any children it will go down until it hits a leaf
+	if (node->leftChild != nullptr)
+		deleteRemainingNodes(node->leftChild);
+	else if (node->rightChild != nullptr)
+		deleteRemainingNodes(node->rightChild);
+
+	// if the leaf has no parent it is th root and can just be deleted
+	if (node->parent == nullptr)
+	{
+		delete node;
+		return;
+	}
+	// if the node is a left child the pointer from parent to left child is set to null
+	else if (node->parent->leftChild == node)
+		node->parent->leftChild = nullptr;
+	// else the node is a right child and the pointer from parent to right child is set to null
+	else
+		node->parent->rightChild = nullptr;
+
+	// now that there are no references left the node gets deleted
+	delete node;
+	
 }
 
 // this will insert a new node to the tree if the value is not already in the tree
@@ -341,6 +369,7 @@ void BinaryTree::removeNode(Node* node)
 		next->leftChild->parent = next;
 	}
 
+	delete node;
 }
 
 // replaces the primary node with the secondary one

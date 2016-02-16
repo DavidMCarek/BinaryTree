@@ -31,6 +31,6 @@ private:
 	Node* getRightmostNode(Node* node);
 	void removeNode(Node* node);
 	void transplant(Node* node, Node* child);
-
+	void deleteRemainingNodes(Node* node);
 };
 
