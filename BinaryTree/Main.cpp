@@ -14,6 +14,8 @@ bool executeCommand(CommandValidator::Command command, BinaryTree& binaryTree);
 
 int main()
 {
+	// when first starting the program display the information on what the program does
+	// and the commands associated with it
 	help();
 
 	string command;
@@ -58,6 +60,7 @@ int main()
     return 0;
 }
 
+// executes a particular function for a given command
 bool executeCommand(CommandValidator::Command command, BinaryTree& binaryTree)
 {
 	
@@ -76,7 +79,6 @@ bool executeCommand(CommandValidator::Command command, BinaryTree& binaryTree)
 		
 		case CommandValidator::Command::Insert:
 		{
-			// get the string the user wants to input then add it to the tree
 			string userInput;
 			cin >> userInput;
 			cout << endl;
@@ -137,6 +139,7 @@ bool executeCommand(CommandValidator::Command command, BinaryTree& binaryTree)
 	return false;
 }
 
+// outputs information pertaining to the user and how the program works
 void help() 
 {
 	// output the help menu

@@ -15,78 +15,73 @@ BinaryTree::~BinaryTree()
 	delete Root;
 }
 
+// this will insert a new node to the tree if the value is not already in the tree
+// if the input value is in the tree then the count will be incremented
 void BinaryTree::insert(std::string input)
 {
 	Node* currentNode = Root;
 	Node* previousNode = nullptr;
-	ChildDirection previousDirection = Unknown;
 
-	// loop will run until a node gets created or the count of a node is incremented
-	while (true) 
+	// keep getting the next node until we hit a null leaf or the input value matches the value of a node
+	// if the values match then the count gets incremented and we return from the function
+	while (currentNode != nullptr)
 	{
-		// if the current node is null then we have traveresed to a leaf of the root is null
-		// in either case we need a new node for the tree and its value should be set to the
-		// user input
-		if (currentNode == nullptr)
-		{
-			currentNode = new Node();
-			currentNode->value = input;
-
-			// the previous node should either be null if the current node is the root or 
-			// one node up in the tree which would be the parent 
-			currentNode->parent = previousNode;
-			printNodeInfo(currentNode);
-
-			// now we have to set the parent to point to the new node based on the direction 
-			// that was taken traveresing the tree
-			if (previousDirection == Left)
-				previousNode->leftChild = currentNode;
-			else if (previousDirection == Right)
-				previousNode->rightChild = currentNode;
-
-			// if there is no root then the node created is the root
-			if (Root == nullptr)
-				Root = currentNode;
-			return;
-		}
-		else if (input.compare(currentNode->value) < 0) // input < node value | go left
-		{
-			previousNode = currentNode;
+		previousNode = currentNode;
+		if (input.compare(currentNode->value) < 0)
 			currentNode = currentNode->leftChild;
-			previousDirection = Left;
-		}
-		else if (input.compare(currentNode->value) > 0) //input > node value | go right
-		{
-			previousNode = currentNode;
+		else if (input.compare(currentNode->value) > 0)
 			currentNode = currentNode->rightChild;
-			previousDirection = Right;
-		}
-		else if (input.compare(currentNode->value) == 0) //input == node value | increment count
+		else
 		{
 			currentNode->count = currentNode->count++;
-			printNodeInfo(currentNode);
 			return;
 		}
+	}
+
+	// since we are at a null leaf we need to create a new node and set its value to the input
+	currentNode = new Node();
+	currentNode->value = input;
+
+	// if the previous node is null then it must be the root so we need to set the root node
+	// to the current node
+	// else we need to set the current nodes parent and the parents child to the current node
+	if (previousNode == nullptr)
+		Root = currentNode;
+	else
+	{
+		currentNode->parent = previousNode;
+
+		if (currentNode->value.compare(previousNode->value) < 0)
+			previousNode->leftChild = currentNode;
+		else
+			previousNode->rightChild = currentNode;
 	}	
 }
 
+// prints the value and count of a node
 void BinaryTree::printNodeInfo(Node* node)
 {
 	std::cout << node->value << " " << node->count << std::endl;
 }
 
+// lists all nodes in the tree in ascending order
 void BinaryTree::list()
 { 
+	// if the root is null then the set is empty and we need to output a blank line and return
 	if (Root == nullptr)
 	{
 		std::cout << std::endl;
 		return;
 	}
+	// if the set is not empty traverse the list in order and output the node values and counts
 	traverse(Root);
 }
 
+// recurse through the tree printing the nodes in order
 void BinaryTree::traverse(Node* node)
 {
+	// if the nodes left child is not null keep going left and then print going back up until you can 
+	// go right. then keep trying to go left again and repeat
 	if (node->leftChild != nullptr)
 		traverse(node->leftChild);
 	
@@ -120,9 +115,10 @@ BinaryTree::Node* BinaryTree::getRightmostNode(Node* node)
 	}
 }
 
+// prints the minimum node value on the tree
 void BinaryTree::min()
 {
-	// start at the root and go left until the left pointer is null
+	// if the root exists then start at the root and go left until the left pointer is null
 	if (Root == nullptr)
 		std::cout << std::endl;
 	else
@@ -132,9 +128,10 @@ void BinaryTree::min()
 	}
 }
 
+// prints the maximum node value on the tree
 void BinaryTree::max()
 {
-	// start at the root and go right until the right pointer is null
+	// if the root exists then start at the root and go right until the right pointer is null
 	if (Root == nullptr)
 		std::cout << std::endl;
 	else
@@ -144,21 +141,34 @@ void BinaryTree::max()
 	}
 }
 
+// prints the nodes value and count based on a users string
 void BinaryTree::search(std::string input)
 {
+	// if the root is null then the set is empty and we need to print that the input was not found
+	if (Root == nullptr)
+	{
+		std::cout << input << " 0" << std::endl;
+		return;
+	}
+
 	Node* node = nodeLookup(input);
+	// if the node was not found print that it was not found else print that nodes value and count
 	if (node == nullptr)
 		std::cout << input << " 0" << std::endl;
 	else
 		printNodeInfo(node);
 }
 
+// finds a node in the tree given a string
 BinaryTree::Node* BinaryTree::nodeLookup(std::string input)
 {
 	Node* currentNode = Root;
 
+	// until a nullptr or the input string is found keep traversing down the the tree
+	// if a nullptr is found then the string is not in the tree
 	while (true)
 	{
+		// traverse left if input is < node value as long as lch not null
 		if (input.compare(currentNode->value) < 0)
 		{
 			if (currentNode->leftChild == nullptr)
@@ -168,6 +178,7 @@ BinaryTree::Node* BinaryTree::nodeLookup(std::string input)
 			}
 			currentNode = currentNode->leftChild;
 		}
+		// traverse right if input is > node value as long as rch not null
 		else if (input.compare(currentNode->value) > 0)
 		{
 			if (currentNode->rightChild == nullptr)
@@ -177,6 +188,7 @@ BinaryTree::Node* BinaryTree::nodeLookup(std::string input)
 			}
 			currentNode = currentNode->rightChild;
 		}
+		// else the input == node value so we return that node
 		else
 		{
 			return currentNode;
@@ -184,10 +196,19 @@ BinaryTree::Node* BinaryTree::nodeLookup(std::string input)
 	}
 }
 
+// prints the successor of the node with value of input
 void BinaryTree::next(std::string input)
 {
+	// if the root is null then print a blank line
+	if (Root == nullptr)
+	{
+		std::cout << std::endl;
+		return;
+	}
+
 	Node* node = nodeLookup(input);
 
+	// if we cant find the node print a blank line
 	if (node == nullptr)
 	{
 		std::cout << std::endl;
@@ -195,7 +216,8 @@ void BinaryTree::next(std::string input)
 	}
 	
 	// if node has right child go as far left as possible from that child
-
+	// else go up the tree until a node has a value larger than the original node
+	// then print the node info
 	if (node->rightChild != nullptr)
 		node = getLeftmostNode(node->rightChild);
 	else
@@ -217,10 +239,19 @@ void BinaryTree::next(std::string input)
 	std::cout << node->value << std::endl;
 }
 
+// prints the predecessor of the node that has the value of the input
 void BinaryTree::previous(std::string input)
 {
+	// if the root is null then the set is empty, print a blank line
+	if (Root == nullptr)
+	{
+		std::cout << std::endl;
+		return;
+	}
+
 	Node* node = nodeLookup(input);
 
+	// if the node cannot be found print a blank line
 	if (node == nullptr)
 	{
 		std::cout << std::endl;
@@ -228,7 +259,8 @@ void BinaryTree::previous(std::string input)
 	}
 
 	// if node has left child go as far right as possible from that child
-
+	// else go up the tree until a node is found that has a value less than the original node value
+	// then print the node info
 	if (node->leftChild != nullptr)
 		node = getRightmostNode(node->leftChild);
 	else
@@ -250,8 +282,15 @@ void BinaryTree::previous(std::string input)
 	std::cout << node->value << std::endl;
 }
 
+// decrements the count of a node with count larger than one or removes a node with count of one
 void BinaryTree::deleteInput(std::string input)
 {
+	// if root is null then the set is empty so output the input string and a count of -1
+	if (Root == nullptr)
+	{
+		std::cout << input << " -1" << std::endl;
+		return;
+	}
 	Node* node = nodeLookup(input);
 
 	// if node not found then print out the input string and -1
@@ -260,6 +299,8 @@ void BinaryTree::deleteInput(std::string input)
 		std::cout << input << " -1" << std::endl;
 		return;
 	}
+	// else decrement the count and print the node info
+	// if the count is 0 we need to remove the node
 	else
 	{
 		node->count = node->count--;
@@ -270,14 +311,21 @@ void BinaryTree::deleteInput(std::string input)
 	}
 }
 
+// removes a node from the tree
 void BinaryTree::removeNode(Node* node)
 {
+	// if the node has no left child replace the node with its right child
 	if (node->leftChild == nullptr)
 		transplant(node, node->rightChild);
+	// if the node has no right child replace the node with its left child
 	else if (node->rightChild == nullptr)
 		transplant(node, node->leftChild);
+	// else the node has 2 or no children and we need to find the nodes successor to replace it
 	else
 	{
+		// if the successor's parent is not the original node replace the successor with its right child
+		// then set the successor's right child equal to the original node's right child
+		// then set the successor's parent equal to the successor
 		Node* next = getLeftmostNode(node->rightChild);
 		if (next->parent != node)
 		{
@@ -285,6 +333,9 @@ void BinaryTree::removeNode(Node* node)
 			next->rightChild = node->rightChild;
 			next->parent = next;
 		}
+		// then the original node gets replaced by the successor
+		// the successor's left child is set to the original nodes left child
+		// and the successors left child's parent is set to the successor
 		transplant(node, next);
 		next->leftChild = node->leftChild;
 		next->leftChild->parent = next;
@@ -292,15 +343,23 @@ void BinaryTree::removeNode(Node* node)
 
 }
 
+// replaces the primary node with the secondary one
 void BinaryTree::transplant(Node* primary, Node* secondary)
 {
+	// if the primary node's parent is null then the primary is the root so the seecondary becomes
+	// the new root
 	if (primary->parent == nullptr)
 		Root = secondary;
+	// if the primary node is its parent's left child then the primary node's parent's left child is 
+	// set to the secondary node
 	else if (primary == primary->parent->leftChild)
 		primary->parent->leftChild = secondary;
+	// else the primary nodes parent's right child is set to the secondary node
 	else
 		primary->parent->rightChild = secondary;
 
+	// if the secondary node is not null then its parent needs to be set to the primary node's parent to 
+	// complete the replacement
 	if (secondary != nullptr)
 		secondary->parent = primary->parent;
 }
