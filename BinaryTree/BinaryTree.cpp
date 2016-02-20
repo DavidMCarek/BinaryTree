@@ -12,6 +12,8 @@ BinaryTree::BinaryTree()
 
 BinaryTree::~BinaryTree()
 {
+	if (Root == nullptr)
+		return;
 	deleteRemainingNodes(Root);
 	Root = nullptr;
 }
